@@ -74,6 +74,10 @@
                 <i class="lab lab-sms text-sm"></i>
                 {{ $t("menu.sms_gateway") }}
             </router-link>
+            <router-link :to="{ name: 'admin.settings.whatsappGateway' }" class="db-tab-btn">
+                <i class="lab lab-sms text-sm"></i>
+                WhatsApp Gateway
+            </router-link>
             <router-link :to="{ name: 'admin.settings.paymentGateway' }" class="db-tab-btn">
                 <i class="lab lab-payment-gateway text-sm"></i>
                 {{ $t("menu.payment_gateway") }}

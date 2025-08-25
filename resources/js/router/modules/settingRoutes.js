@@ -406,6 +406,17 @@ export default [
                 },
             },
             {
+                path: "whatsapp-gateway",
+                component: SmsGatewayComponent,
+                name: "admin.settings.whatsappGateway",
+                meta: {
+                    isFrontend: false,
+                    auth: true,
+                    permissionUrl: "settings",
+                    breadcrumb: "sms_gateway",
+                },
+            },
+            {
                 path: "payment-gateway",
                 component: PaymentGatewayComponent,
                 name: "admin.settings.paymentGateway",
