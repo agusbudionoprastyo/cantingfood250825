@@ -529,7 +529,13 @@
       "telr_store_auth_key": "Kunci Auth Toko Telr",
       "telr_mode": "Modus Telepon",
       "telr_status": "Status Telp",
-      "push_notification": "Notifikasi Dorong"
+      "push_notification": "Notifikasi Dorong",
+      "whatsapp_api_url": "WhatsApp API URL",
+      "whatsapp_api_path": "WhatsApp API Path",
+      "whatsapp_session": "WhatsApp Session",
+      "whatsapp_status": "Status WhatsApp",
+      "whatsapp_default_phone": "WhatsApp Default Phone",
+      "whatsapp_country_code": "Kode Negara WhatsApp"
     },
     "button": {
       "add": "Add",
