@@ -16,8 +16,8 @@ class WhatsappController extends Controller
         try {
             $request->validate([
                 'order_id' => 'required|exists:frontend_orders,id',
-                'phone' => 'required|string',
-                'country_code' => 'required|string',
+                'phone' => 'nullable|string',
+                'country_code' => 'nullable|string',
                 'message' => 'nullable|string'
             ]);
 
@@ -31,7 +31,10 @@ class WhatsappController extends Controller
 
             $whatsappService = new WhatsappService($request->order_id);
             
-            $result = $whatsappService->sendCustomMessage($request->country_code, $request->phone, $request->message ?? '');
+            $phone = $request->phone ?? 'default';
+            $countryCode = $request->country_code ?? 'default';
+            
+            $result = $whatsappService->sendCustomMessage($countryCode, $phone, $request->message ?? '');
 
             return response()->json([
                 'status' => true,

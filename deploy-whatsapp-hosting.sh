@@ -31,6 +31,18 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+php artisan migrate --path=database/migrations/2024_01_04_000000_add_default_phone_to_whatsapp_gateway.php
+if [ $? -ne 0 ]; then
+    echo "❌ Migration failed!"
+    exit 1
+fi
+
+php artisan migrate --path=database/migrations/2024_01_05_000000_add_api_path_to_whatsapp_gateway.php
+if [ $? -ne 0 ]; then
+    echo "❌ Migration failed!"
+    exit 1
+fi
+
 echo "✅ Migrations completed!"
 echo ""
 

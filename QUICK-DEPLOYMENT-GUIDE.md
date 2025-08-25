@@ -27,7 +27,9 @@ APP_URL=https://yourdomain.com
 2. Settings > SMS Gateway > WhatsApp
 3. Set API URL: `https://dev-iptv-wa.appdewa.com`
 4. Set Session: `mysession`
-5. Enable gateway
+5. Set Default Phone: `812345678`
+6. Set Country Code: `62`
+7. Enable gateway
 
 ### **STEP 5: Test System**
 ```bash
@@ -49,6 +51,7 @@ curl -X POST "https://dev-iptv-wa.appdewa.com/message/send-text" \
 - [ ] `database/migrations/2024_01_01_000000_add_whatsapp_to_notification_alerts_table.php`
 - [ ] `database/migrations/2024_01_02_000000_create_whatsapp_logs_table.php`
 - [ ] `database/migrations/2024_01_03_000000_create_whatsapp_templates_table.php`
+- [ ] `database/migrations/2024_01_04_000000_add_default_phone_to_whatsapp_gateway.php`
 - [ ] `database/seeders/WhatsappGatewaySeeder.php`
 - [ ] `database/seeders/WhatsappTemplateSeeder.php`
 - [ ] `database/seeders/NotificationAlertTableSeeder.php`

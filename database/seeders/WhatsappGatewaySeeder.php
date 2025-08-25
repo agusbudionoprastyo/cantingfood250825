@@ -30,6 +30,15 @@ class WhatsappGatewaySeeder extends Seeder
         GatewayOption::create([
             'model_type' => SmsGateway::class,
             'model_id' => $whatsappGateway->id,
+            'option' => 'whatsapp_api_path',
+            'value' => '/message/send-text',
+            'type' => InputType::TEXT,
+            'activities' => json_encode([])
+        ]);
+
+        GatewayOption::create([
+            'model_type' => SmsGateway::class,
+            'model_id' => $whatsappGateway->id,
             'option' => 'whatsapp_session',
             'value' => 'mysession',
             'type' => InputType::TEXT,
@@ -46,6 +55,24 @@ class WhatsappGatewaySeeder extends Seeder
                 Activity::ENABLE => 'enable',
                 Activity::DISABLE => 'disable'
             ])
+        ]);
+
+        GatewayOption::create([
+            'model_type' => SmsGateway::class,
+            'model_id' => $whatsappGateway->id,
+            'option' => 'whatsapp_default_phone',
+            'value' => '62812345678',
+            'type' => InputType::TEXT,
+            'activities' => json_encode([])
+        ]);
+
+        GatewayOption::create([
+            'model_type' => SmsGateway::class,
+            'model_id' => $whatsappGateway->id,
+            'option' => 'whatsapp_country_code',
+            'value' => '62',
+            'type' => InputType::TEXT,
+            'activities' => json_encode([])
         ]);
     }
 }

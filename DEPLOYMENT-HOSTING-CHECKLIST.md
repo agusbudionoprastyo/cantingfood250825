@@ -60,6 +60,7 @@ php artisan migrate
 php artisan migrate --path=database/migrations/2024_01_01_000000_add_whatsapp_to_notification_alerts_table.php
 php artisan migrate --path=database/migrations/2024_01_02_000000_create_whatsapp_logs_table.php
 php artisan migrate --path=database/migrations/2024_01_03_000000_create_whatsapp_templates_table.php
+php artisan migrate --path=database/migrations/2024_01_04_000000_add_default_phone_to_whatsapp_gateway.php
 ```
 
 ### **STEP 3: Run Seeders**

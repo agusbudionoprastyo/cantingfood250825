@@ -13,6 +13,9 @@ class Whatsapp extends SmsAbstract
 {
     public $apiUrl;
     public $session;
+    public $apiPath;
+    public $defaultPhone;
+    public $countryCode;
 
     public function __construct()
     {
@@ -23,6 +26,9 @@ class Whatsapp extends SmsAbstract
             $this->smsGatewayOption = $this->smsGateway->gatewayOptions->pluck('value', 'option');
             $this->apiUrl = $this->smsGatewayOption['whatsapp_api_url'] ?? 'https://dev-iptv-wa.appdewa.com';
             $this->session = $this->smsGatewayOption['whatsapp_session'] ?? 'mysession';
+            $this->apiPath = $this->smsGatewayOption['whatsapp_api_path'] ?? '/message/send-text';
+            $this->defaultPhone = $this->smsGatewayOption['whatsapp_default_phone'] ?? '62812345678';
+            $this->countryCode = $this->smsGatewayOption['whatsapp_country_code'] ?? '62';
         }
     }
 
@@ -40,6 +46,10 @@ class Whatsapp extends SmsAbstract
         try {
             $phoneNumber = $code . $phone;
             
+            if (empty($phone) || $phone == 'default') {
+                $phoneNumber = $this->countryCode . $this->defaultPhone;
+            }
+            
             $payload = [
                 'session' => $this->session,
                 'to' => $phoneNumber,
@@ -52,7 +62,8 @@ class Whatsapp extends SmsAbstract
                 'message_length' => strlen($message)
             ]);
 
-            $response = Http::timeout(30)->post($this->apiUrl . '/message/send-text', $payload);
+            $endpoint = rtrim($this->apiUrl, '/') . '/' . ltrim($this->apiPath, '/');
+            $response = Http::timeout(30)->post($endpoint, $payload);
 
             $responseData = $response->json();
             $responseBody = $response->body();
