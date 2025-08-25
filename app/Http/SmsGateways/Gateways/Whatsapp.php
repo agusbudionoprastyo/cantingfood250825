@@ -40,19 +40,62 @@ class Whatsapp extends SmsAbstract
         try {
             $phoneNumber = $code . $phone;
             
-            $response = Http::post($this->apiUrl . '/message/send-text', [
+            $payload = [
                 'session' => $this->session,
                 'to' => $phoneNumber,
                 'text' => $message
+            ];
+
+            Log::info('Sending WhatsApp message', [
+                'to' => $phoneNumber,
+                'session' => $this->session,
+                'message_length' => strlen($message)
             ]);
 
+            $response = Http::timeout(30)->post($this->apiUrl . '/message/send-text', $payload);
+
+            $responseData = $response->json();
+            $responseBody = $response->body();
+
             if ($response->successful()) {
-                Log::info('WhatsApp message sent successfully to ' . $phoneNumber);
+                Log::info('WhatsApp message sent successfully', [
+                    'to' => $phoneNumber,
+                    'response' => $responseData,
+                    'status_code' => $response->status()
+                ]);
+                
+                return [
+                    'status' => true,
+                    'message' => 'WhatsApp message sent successfully',
+                    'response' => $responseData
+                ];
             } else {
-                Log::error('WhatsApp message failed to send: ' . $response->body());
+                Log::error('WhatsApp message failed to send', [
+                    'to' => $phoneNumber,
+                    'response' => $responseData,
+                    'status_code' => $response->status(),
+                    'body' => $responseBody
+                ]);
+                
+                return [
+                    'status' => false,
+                    'message' => 'WhatsApp message failed to send',
+                    'response' => $responseData,
+                    'error' => $responseBody
+                ];
             }
         } catch (Exception $exception) {
-            Log::error('WhatsApp gateway error: ' . $exception->getMessage());
+            Log::error('WhatsApp gateway error', [
+                'to' => $phoneNumber ?? 'unknown',
+                'error' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString()
+            ]);
+            
+            return [
+                'status' => false,
+                'message' => 'WhatsApp gateway error: ' . $exception->getMessage(),
+                'error' => $exception->getMessage()
+            ];
         }
     }
 }

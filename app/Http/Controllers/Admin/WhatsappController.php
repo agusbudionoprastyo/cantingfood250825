@@ -31,11 +31,12 @@ class WhatsappController extends Controller
 
             $whatsappService = new WhatsappService($request->order_id);
             
-            $whatsappService->sendCustomMessage($request->country_code, $request->phone, $request->message ?? '');
+            $result = $whatsappService->sendCustomMessage($request->country_code, $request->phone, $request->message ?? '');
 
             return response()->json([
                 'status' => true,
-                'message' => 'WhatsApp notification sent successfully'
+                'message' => 'WhatsApp notification sent successfully',
+                'data' => $result
             ]);
 
         } catch (Exception $exception) {
@@ -43,6 +44,52 @@ class WhatsappController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Failed to send WhatsApp notification: ' . $exception->getMessage()
+            ], 500);
+        }
+    }
+
+    public function testEndpoint(Request $request)
+    {
+        try {
+            $request->validate([
+                'phone' => 'required|string',
+                'country_code' => 'required|string',
+                'message' => 'required|string'
+            ]);
+
+            $phoneNumber = $request->country_code . $request->phone;
+            
+            $smsManagerService = new \App\Services\SmsManagerService();
+            $smsService = new \App\Services\SmsService();
+            
+            if ($smsService->gateway() && $smsManagerService->gateway($smsService->gateway())->status()) {
+                $result = $smsManagerService->gateway($smsService->gateway())->send(
+                    $request->country_code, 
+                    $request->phone, 
+                    $request->message
+                );
+                
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Test message sent',
+                    'data' => [
+                        'phone' => $phoneNumber,
+                        'message' => $request->message,
+                        'result' => $result
+                    ]
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'WhatsApp gateway not available or disabled'
+                ], 400);
+            }
+
+        } catch (Exception $exception) {
+            Log::error('WhatsApp test error: ' . $exception->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to send test message: ' . $exception->getMessage()
             ], 500);
         }
     }

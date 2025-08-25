@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SmsGatewayTableSeederVersionOne::class);
         $this->call(SmsGatewayTableSeederVersionTwo::class);
         $this->call(WhatsappGatewaySeeder::class);
+        $this->call(WhatsappTemplateSeeder::class);
         $this->call(LanguageTableSeeder::class);
         $this->call(CurrencyTableSeeder::class);
         $this->call(BranchTableSeeder::class);

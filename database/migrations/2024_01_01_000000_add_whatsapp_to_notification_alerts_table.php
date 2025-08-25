@@ -9,8 +9,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('notification_alerts', function (Blueprint $table) {
-            $table->boolean('whatsapp')->default(false)->after('sms');
-            $table->text('whatsapp_message')->nullable()->after('sms_message');
+            $table->boolean('whatsapp')->default(false)->after('push_notification');
+            $table->text('whatsapp_message')->nullable()->after('push_notification_message');
         });
     }
 
