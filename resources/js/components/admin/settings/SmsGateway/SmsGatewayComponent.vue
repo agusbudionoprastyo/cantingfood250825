@@ -11,16 +11,6 @@
                 </span>
             </button>
 
-            <button v-if="whatsappIndex >= 3"
-                @click="selectActive(whatsappIndex)"
-                class="db-tab-sub-btn w-full flex items-center gap-3 h-10 px-4 rounded-lg transition bg-white hover:text-primary hover:bg-primary/5"
-                data-tab="#whatsapp"
-                :class="whatsappIndex === selectIndex ? 'active' : ''">
-                <span class="capitalize whitespace-nowrap text-[15px]">
-                    {{ whatsappName }}
-                </span>
-            </button>
-
             <div v-if="smsGateways.length > 3" class="dropdown-group w-full">
                 <button
                     class="dropdown-btn w-full flex items-center gap-3 h-10 px-4 rounded-lg transition bg-white hover:text-primary hover:bg-primary/5">
@@ -113,14 +103,6 @@ export default {
         smsGateways: function () {
             return this.$store.getters["smsGateway/lists"];
         },
-        whatsappIndex: function () {
-            const idx = this.smsGateways.findIndex(g => g.slug === 'whatsapp');
-            return idx === -1 ? 0 : idx;
-        },
-        whatsappName: function () {
-            const gw = this.smsGateways.find(g => g.slug === 'whatsapp');
-            return gw ? gw.name : 'WhatsApp';
-        }
     },
     mounted() {
         try {

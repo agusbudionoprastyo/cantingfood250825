@@ -27,8 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentGatewayTableSeederVersionThree::class);
         $this->call(SmsGatewayTableSeederVersionOne::class);
         $this->call(SmsGatewayTableSeederVersionTwo::class);
-        $this->call(WhatsappGatewaySeeder::class);
-        $this->call(WhatsappTemplateSeeder::class);
         $this->call(LanguageTableSeeder::class);
         $this->call(CurrencyTableSeeder::class);
         $this->call(BranchTableSeeder::class);
@@ -57,5 +55,6 @@ class DatabaseSeeder extends Seeder
         $this->call(OrderAddressTableSeeder::class);
         $this->call(TransactionTableSeeder::class);
         $this->call(DiningTableTableSeeder::class);
+        $this->call(WhatsAppGatewayTableSeeder::class);
     }
 }

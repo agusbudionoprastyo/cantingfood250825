@@ -15,6 +15,8 @@ class SettingService
         $array = array_merge($array, Settings::group('otp')->all());
         $array = array_merge($array, Settings::group('social_media')->all());
         $array = array_merge($array, Settings::group('notification')->all());
-        return $array = array_merge($array, Settings::group('order_setup')->all());
+        $array = array_merge($array, Settings::group('order_setup')->all());
+        $array = array_merge($array, Settings::group('whatsapp_gateway')->all());
+        return $array;
     }
 }

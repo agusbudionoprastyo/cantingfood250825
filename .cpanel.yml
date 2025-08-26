@@ -1,5 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home2/dafamsem/cantingfood/
-    - /bin/cp -R * $DEPLOYPATH

@@ -33,6 +33,7 @@ import PaymentGatewayComponent from "../../components/admin/settings/PaymentGate
 import SmsGatewayComponent from "../../components/admin/settings/SmsGateway/SmsGatewayComponent";
 import NotificationAlertComponent from "../../components/admin/settings/NotificationAlert/NotificationAlertComponent";
 import NotificationComponent from "../../components/admin/settings/Notification/NotificationComponent";
+import WhatsAppGatewayComponent from "../../components/admin/settings/WhatsAppGateway/WhatsAppGatewayComponent";
 
 export default [
     {
@@ -406,17 +407,6 @@ export default [
                 },
             },
             {
-                path: "whatsapp-gateway",
-                component: SmsGatewayComponent,
-                name: "admin.settings.whatsappGateway",
-                meta: {
-                    isFrontend: false,
-                    auth: true,
-                    permissionUrl: "settings",
-                    breadcrumb: "sms_gateway",
-                },
-            },
-            {
                 path: "payment-gateway",
                 component: PaymentGatewayComponent,
                 name: "admin.settings.paymentGateway",
@@ -458,6 +448,17 @@ export default [
                     auth: true,
                     permissionUrl: "settings",
                     breadcrumb: "notification",
+                },
+            },
+            {
+                path: "whatsapp-gateway",
+                component: WhatsAppGatewayComponent,
+                name: "admin.settings.whatsappGateway",
+                meta: {
+                    isFrontend: false,
+                    auth: true,
+                    permissionUrl: "settings",
+                    breadcrumb: "whatsapp_gateway",
                 },
             },
         ],

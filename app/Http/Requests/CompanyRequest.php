@@ -34,6 +34,7 @@ class CompanyRequest extends FormRequest
             'company_country_code' => ['required', 'string', 'max:190'],
             'company_zip_code'     => ['required', 'string', 'max:190'],
             'company_address'      => ['required', 'string', 'max:500'],
+
         ];
     }
 }

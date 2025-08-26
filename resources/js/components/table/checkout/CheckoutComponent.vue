@@ -287,7 +287,7 @@ export default {
         this.checkoutProps.form.total = 0;
         this.checkoutProps.form.items = [];
 
-
+        // WhatsApp notification will be sent automatically from backend
         
         await this.$store.dispatch('tableCart/resetCart');
         this.loading.isActive = false;
@@ -304,8 +304,7 @@ export default {
         }
         console.error('Error placing order:', error);
       }
-    },
-
+    }
   }
 };
 </script>

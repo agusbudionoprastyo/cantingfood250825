@@ -16,10 +16,11 @@ use App\Enums\PaymentStatus;
 use App\Models\OrderAddress;
 use App\Libraries\AppLibrary;
 use App\Models\FrontendOrder;
+use App\Models\DiningTable;
 use App\Events\SendOrderGotSms;
 use App\Events\SendOrderGotMail;
 use App\Events\SendOrderGotPush;
-use App\Events\SendOrderGotWhatsapp;
+use App\Services\WhatsAppService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderRequest;
 use Illuminate\Support\Facades\Log;
@@ -396,7 +397,8 @@ class OrderService
                 SendOrderGotMail::dispatch(['order_id' => $this->order->id]);
                 SendOrderGotSms::dispatch(['order_id' => $this->order->id]);
                 SendOrderGotPush::dispatch(['order_id' => $this->order->id]);
-                SendOrderGotWhatsapp::dispatch(['order_id' => $this->order->id]);
+                
+                $this->sendWhatsAppNotification($request, $requestItems);
             });
             return $this->order;
         } catch (Exception $exception) {
@@ -560,6 +562,123 @@ class OrderService
             Log::info($exception->getMessage());
             DB::rollBack();
             throw new Exception($exception->getMessage(), 422);
+        }
+    }
+
+    private function sendWhatsAppNotification($request, $requestItems): void
+    {
+        try {
+            $whatsappService = new WhatsAppService();
+            $whatsappPhone = Settings::group('whatsapp_gateway')->get('whatsapp_phone');
+            
+            if (empty($whatsappPhone)) {
+                Log::warning('WhatsApp phone number not configured for notification');
+                return;
+            }
+
+            $orderData = [
+                'table_name' => $this->getTableName($request->dining_table_id),
+                'items' => $this->formatOrderItems($requestItems),
+                'subtotal' => $this->formatCurrency($request->subtotal),
+                'tax' => $this->formatCurrency($request->subtotal * 0.21),
+                'total' => $this->formatCurrency($request->total)
+            ];
+
+            $whatsappService->sendOrderNotification($whatsappPhone, $orderData);
+        } catch (Exception $exception) {
+            Log::error('WhatsApp notification failed', [
+                'message' => $exception->getMessage(),
+                'order_id' => $this->order->id ?? null
+            ]);
+        }
+    }
+
+    private function getTableName($tableId): string
+    {
+        try {
+            $table = DiningTable::find($tableId);
+            return $table ? $table->name : 'Unknown Table';
+        } catch (Exception $exception) {
+            Log::error('Error getting table name', ['table_id' => $tableId]);
+            return 'Unknown Table';
+        }
+    }
+
+    private function formatOrderItems($requestItems): array
+    {
+        $formattedItems = [];
+        
+        if (!blank($requestItems)) {
+            foreach ($requestItems as $item) {
+                $itemData = [
+                    'name' => $this->getItemName($item->item_id),
+                    'quantity' => $item->quantity,
+                    'variations' => $this->formatVariations($item->item_variations),
+                    'extras' => $this->formatExtras($item->item_extras),
+                    'instruction' => $item->instruction ?? ''
+                ];
+                $formattedItems[] = $itemData;
+            }
+        }
+        
+        return $formattedItems;
+    }
+
+    private function getItemName($itemId): string
+    {
+        try {
+            $item = Item::find($itemId);
+            return $item ? $item->name : 'Unknown Item';
+        } catch (Exception $exception) {
+            Log::error('Error getting item name', ['item_id' => $itemId]);
+            return 'Unknown Item';
+        }
+    }
+
+    private function formatVariations($variations): string
+    {
+        if (empty($variations) || !is_array($variations)) {
+            return '';
+        }
+        
+        $formatted = [];
+        foreach ($variations as $variation) {
+            if (isset($variation->name)) {
+                $formatted[] = $variation->name;
+            }
+        }
+        
+        return implode(', ', $formatted);
+    }
+
+    private function formatExtras($extras): string
+    {
+        if (empty($extras) || !is_array($extras)) {
+            return '';
+        }
+        
+        $formatted = [];
+        foreach ($extras as $extra) {
+            if (isset($extra->name)) {
+                $formatted[] = $extra->name;
+            }
+        }
+        
+        return implode(', ', $formatted);
+    }
+
+    private function formatCurrency($amount): string
+    {
+        $currency = Settings::group('site')->get('site_default_currency_symbol', '$');
+        $decimal = Settings::group('site')->get('site_digit_after_decimal_point', 2);
+        $position = Settings::group('site')->get('site_currency_position', 'left');
+        
+        $formatted = number_format($amount, $decimal);
+        
+        if ($position === 'left') {
+            return $currency . $formatted;
+        } else {
+            return $formatted . $currency;
         }
     }
 }

@@ -48,6 +48,7 @@
         "update": "Update",
         "payment_gateway": "Payment Gateway",
         "sms_gateway": "Sms Gateway",
+        "whatsapp_gateway": "WhatsApp Gateway",
         "sales_report": "Sales Report",
         "items_report": "Items Report",
         "edit_profile": "Edit Profile",
@@ -529,13 +530,7 @@
         "telr_store_auth_key" : "Telr Store Auth key",
         "telr_mode" : "Telr Mode",
         "telr_status" : "Telr Status",
-        "push_notification" : "Push Notification",
-        "whatsapp_api_url": "WhatsApp API URL",
-        "whatsapp_api_path": "WhatsApp API Path",
-        "whatsapp_session": "WhatsApp Session",
-        "whatsapp_status": "WhatsApp Status",
-        "whatsapp_default_phone": "WhatsApp Default Phone",
-        "whatsapp_country_code": "WhatsApp Country Code"
+        "push_notification" : "Push Notification"
     },
     "button": {
         "add": "Add",

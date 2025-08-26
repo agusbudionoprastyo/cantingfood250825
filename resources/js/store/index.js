@@ -66,6 +66,7 @@ import {tableDiningOrder} from "./modules/table/tableDiningOrder";
 import { tableOrder } from './modules/tableOrder';
 import { notificationAlert } from './modules/notificationAlert';
 import { notification } from './modules/notification';
+import { whatsappGateway } from './modules/whatsappGateway';
 
 
 export default new createStore({
@@ -137,7 +138,8 @@ export default new createStore({
         tableDiningOrder,
         tableOrder,
         notificationAlert,
-        notification
+        notification,
+        whatsappGateway
     },
     plugins: [
         createPersistedState({

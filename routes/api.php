@@ -58,8 +58,6 @@ use App\Http\Controllers\Admin\AnalyticSectionController;
 use App\Http\Controllers\Admin\CustomerAddressController;
 use App\Http\Controllers\Admin\EmployeeAddressController;
 use App\Http\Controllers\Admin\NotificationAlertController;
-use App\Http\Controllers\Admin\WhatsappController;
-use App\Http\Controllers\Admin\WhatsappTemplateController;
 use App\Http\Controllers\Admin\CreditBalanceReportController;
 use App\Http\Controllers\Admin\AdministratorAddressController;
 use App\Http\Controllers\Table\OrderController as TableOrderController;
@@ -70,6 +68,7 @@ use App\Http\Controllers\Admin\TableOrderController as AdminTableOrderController
 use App\Http\Controllers\Frontend\LanguageController as FrontendLanguageController;
 use App\Http\Controllers\Table\DiningTableController as TableDiningTableController;
 use App\Http\Controllers\Table\ItemCategoryController as TableItemCategoryController;
+use App\Http\Controllers\Admin\WhatsAppGatewayController;
 
 
 /*
@@ -287,24 +286,6 @@ Route::prefix('admin')->name('admin.')->middleware(['installed', 'apiKey', 'auth
             Route::get('/', [NotificationController::class, 'index']);
             Route::match(['put', 'patch'], '/', [NotificationController::class, 'update']);
         });
-
-        Route::prefix('whatsapp')->name('whatsapp.')->group(function () {
-            Route::post('/send-order-notification', [WhatsappController::class, 'sendOrderNotification']);
-            Route::post('/send-bulk-notification', [WhatsappController::class, 'sendBulkNotification']);
-            Route::post('/test-endpoint', [WhatsappController::class, 'testEndpoint']);
-        });
-
-        Route::prefix('whatsapp-templates')->name('whatsapp-templates.')->group(function () {
-            Route::get('/', [WhatsappTemplateController::class, 'index']);
-            Route::post('/', [WhatsappTemplateController::class, 'store']);
-            Route::get('/{id}', [WhatsappTemplateController::class, 'show']);
-            Route::match(['put', 'patch'], '/{id}', [WhatsappTemplateController::class, 'update']);
-            Route::delete('/{id}', [WhatsappTemplateController::class, 'destroy']);
-            Route::post('/{id}/toggle-status', [WhatsappTemplateController::class, 'toggleStatus']);
-            Route::post('/{id}/preview', [WhatsappTemplateController::class, 'preview']);
-            Route::get('/{id}/variables', [WhatsappTemplateController::class, 'getVariables']);
-            Route::get('/type/{type}', [WhatsappTemplateController::class, 'getByType']);
-        });
     });
 
     Route::prefix('customer')->name('customer.')->group(function () {
@@ -498,6 +479,12 @@ Route::prefix('admin')->name('admin.')->middleware(['installed', 'apiKey', 'auth
         Route::match(['post', 'put', 'patch'], '/{diningTable}', [DiningTableController::class, 'update']);
         Route::delete('/{diningTable}', [DiningTableController::class, 'destroy']);
         Route::get('/export', [DiningTableController::class, 'export']);
+    });
+
+    Route::prefix('whatsapp-gateway')->name('whatsapp-gateway.')->group(function () {
+        Route::get('/', [WhatsAppGatewayController::class, 'index']);
+        Route::post('/', [WhatsAppGatewayController::class, 'update']);
+        Route::post('/test-connection', [WhatsAppGatewayController::class, 'testConnection']);
     });
 });
 

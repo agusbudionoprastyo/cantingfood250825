@@ -5,13 +5,11 @@ namespace App\Providers;
 use App\Events\SendOrderGotMail;
 use App\Events\SendOrderGotPush;
 use App\Events\SendOrderGotSms;
-use App\Events\SendOrderGotWhatsapp;
 use App\Events\SendResetPassword;
 use App\Events\SendSmsCode;
 use App\Listeners\SendOrderGotMailNotification;
 use App\Listeners\SendOrderGotPushNotification;
 use App\Listeners\SendOrderGotSmsNotification;
-use App\Listeners\SendOrderGotWhatsappNotification;
 use App\Listeners\SendResetPasswordNotification;
 use App\Listeners\SendSmsCodeNotification;
 use App\Models\User;
@@ -45,9 +43,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         SendOrderGotPush::class         => [
             SendOrderGotPushNotification::class
-        ],
-        SendOrderGotWhatsapp::class     => [
-            SendOrderGotWhatsappNotification::class
         ],
     ];
 

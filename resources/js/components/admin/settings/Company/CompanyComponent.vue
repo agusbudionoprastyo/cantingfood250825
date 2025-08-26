@@ -101,6 +101,8 @@
                         }}</small>
                     </div>
 
+
+
                     <div class="form-col-12">
                         <button type="submit" class="db-btn text-white bg-primary">
                             <i class="lab lab-save"></i>
@@ -136,6 +138,7 @@ export default {
                 company_country_code: null,
                 company_zip_code: "",
                 company_address: "",
+
             },
             errors: {},
         };
@@ -170,6 +173,7 @@ export default {
                                 res.data.data.company_country_code,
                             company_zip_code: res.data.data.company_zip_code,
                             company_address: res.data.data.company_address,
+
                         };
                         this.loading.isActive = false;
                     })
