@@ -581,12 +581,16 @@ class OrderService
 
             $whatsappService = new WhatsAppService();
             
+            $subtotalAmount = (float) $request->subtotal;
+            $taxAmount      = $subtotalAmount * 0.21;
+            $totalAmount    = $subtotalAmount + $taxAmount;
+
             $orderData = [
                 'table_name' => $this->getTableName($request->dining_table_id),
-                'items' => $this->formatOrderItems($requestItems),
-                'subtotal' => $this->formatCurrency($request->subtotal),
-                'tax' => $this->formatCurrency($request->subtotal * 0.21),
-                'total' => $this->formatCurrency($request->total)
+                'items'      => $this->formatOrderItems($requestItems),
+                'subtotal'   => $this->formatCurrency($subtotalAmount),
+                'tax'        => $this->formatCurrency($taxAmount),
+                'total'      => $this->formatCurrency($totalAmount)
             ];
 
             $whatsappService->sendOrderNotification($whatsappPhone, $orderData);
