@@ -49,6 +49,7 @@
       "payment_gateway": "Payment Gateway",
       "sms_gateway": "Gateway Sms",
       "whatsapp_gateway": "Gateway WhatsApp",
+      "whatsapp_phone_or_group": "Nomor WhatsApp atau Group ID",
       "sales_report": "Laporan penjualan",
       "items_report": "Laporan Item",
       "edit_profile": "Sunting profil",

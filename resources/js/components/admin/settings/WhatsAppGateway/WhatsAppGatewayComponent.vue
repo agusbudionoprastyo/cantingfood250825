@@ -48,7 +48,7 @@
 
                     <div class="form-col-12 sm:form-col-6">
                         <label for="whatsapp_phone" class="db-field-title required">
-                            Phone Number or Group ID
+                            {{ $t('menu.whatsapp_phone_or_group') }}
                         </label>
                         <input v-model="form.whatsapp_phone" 
                                v-bind:class="errors.whatsapp_phone ? 'invalid' : ''"

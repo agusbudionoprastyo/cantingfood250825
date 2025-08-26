@@ -49,6 +49,7 @@
         "payment_gateway": "Payment Gateway",
         "sms_gateway": "Sms Gateway",
         "whatsapp_gateway": "WhatsApp Gateway",
+        "whatsapp_phone_or_group": "Phone Number or Group ID",
         "sales_report": "Sales Report",
         "items_report": "Items Report",
         "edit_profile": "Edit Profile",
