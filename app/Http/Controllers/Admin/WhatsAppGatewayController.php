@@ -14,7 +14,6 @@ class WhatsAppGatewayController extends Controller
 
     public function __construct(WhatsAppGatewayService $whatsAppGatewayService)
     {
-        parent::__construct();
         $this->whatsAppGatewayService = $whatsAppGatewayService;
     }
 

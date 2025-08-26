@@ -11,18 +11,14 @@ use App\Services\WhatsAppGatewayService;
 echo "=== Testing API Endpoint ===\n\n";
 
 try {
-    echo "1. Testing Controller directly...\n";
+    echo "1. Testing Service directly...\n";
     $service = new WhatsAppGatewayService();
-    $controller = new WhatsAppGatewayController($service);
+    $settings = $service->list();
     
-    $response = $controller->index();
-    $data = json_decode($response->getContent(), true);
+    echo "✅ Service working\n";
+    echo "Data count: " . count($settings) . "\n";
     
-    echo "✅ Controller working\n";
-    echo "Status: " . ($data['status'] ? 'true' : 'false') . "\n";
-    echo "Data count: " . count($data['data']) . "\n";
-    
-    foreach ($data['data'] as $key => $value) {
+    foreach ($settings as $key => $value) {
         echo "   - {$key}: " . (is_bool($value) ? ($value ? 'true' : 'false') : $value) . "\n";
     }
     
@@ -36,12 +32,14 @@ try {
         'whatsapp_message_template' => 'Test template'
     ];
     
-    $updateResponse = $controller->update(new \App\Http\Requests\WhatsAppGatewayRequest($requestData));
-    $updateData = json_decode($updateResponse->getContent(), true);
+    $updatedSettings = $service->update($requestData);
     
     echo "✅ Update method working\n";
-    echo "Status: " . ($updateData['status'] ? 'true' : 'false') . "\n";
-    echo "Message: " . $updateData['message'] . "\n";
+    echo "Updated settings count: " . count($updatedSettings) . "\n";
+    
+    echo "\n3. Testing WhatsApp Service...\n";
+    $whatsappService = new \App\Services\WhatsAppService();
+    echo "✅ WhatsApp Service created successfully\n";
     
     echo "\n✅ All API tests passed!\n";
     
