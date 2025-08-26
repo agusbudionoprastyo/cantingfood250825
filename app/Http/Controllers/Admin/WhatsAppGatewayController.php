@@ -16,7 +16,6 @@ class WhatsAppGatewayController extends Controller
     {
         parent::__construct();
         $this->whatsAppGatewayService = $whatsAppGatewayService;
-        $this->middleware(['permission:settings'])->only(['index', 'update', 'testConnection']);
     }
 
     public function index()
@@ -28,10 +27,12 @@ class WhatsAppGatewayController extends Controller
                 'data' => $settings
             ]);
         } catch (Exception $exception) {
+            \Log::error('WhatsApp Gateway index error: ' . $exception->getMessage());
             return response()->json([
                 'status' => false,
-                'message' => $exception->getMessage()
-            ], 422);
+                'message' => 'Failed to load WhatsApp gateway settings',
+                'error' => $exception->getMessage()
+            ], 500);
         }
     }
 
@@ -45,10 +46,12 @@ class WhatsAppGatewayController extends Controller
                 'message' => 'WhatsApp gateway settings updated successfully'
             ]);
         } catch (Exception $exception) {
+            \Log::error('WhatsApp Gateway update error: ' . $exception->getMessage());
             return response()->json([
                 'status' => false,
-                'message' => $exception->getMessage()
-            ], 422);
+                'message' => 'Failed to update WhatsApp gateway settings',
+                'error' => $exception->getMessage()
+            ], 500);
         }
     }
 
