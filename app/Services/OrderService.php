@@ -568,14 +568,19 @@ class OrderService
     private function sendWhatsAppNotification($request, $requestItems): void
     {
         try {
-            $whatsappService = new WhatsAppService();
+            $enabled = Settings::group('whatsapp_gateway')->get('whatsapp_enabled', false);
+            if (!$enabled) {
+                return;
+            }
+
             $whatsappPhone = Settings::group('whatsapp_gateway')->get('whatsapp_phone');
-            
             if (empty($whatsappPhone)) {
                 Log::warning('WhatsApp phone number not configured for notification');
                 return;
             }
 
+            $whatsappService = new WhatsAppService();
+            
             $orderData = [
                 'table_name' => $this->getTableName($request->dining_table_id),
                 'items' => $this->formatOrderItems($requestItems),
@@ -588,7 +593,8 @@ class OrderService
         } catch (Exception $exception) {
             Log::error('WhatsApp notification failed', [
                 'message' => $exception->getMessage(),
-                'order_id' => $this->order->id ?? null
+                'order_id' => $this->order->id ?? null,
+                'trace' => $exception->getTraceAsString()
             ]);
         }
     }
