@@ -678,6 +678,10 @@ class OrderService
         $currency = Settings::group('site')->get('site_default_currency_symbol', '$');
         $decimal = Settings::group('site')->get('site_digit_after_decimal_point', 2);
         $position = Settings::group('site')->get('site_currency_position', 'left');
+
+        if ($currency === 'Rp' || strtoupper((string)$currency) === 'IDR') {
+            $position = 'left';
+        }
         
         $formatted = number_format($amount, $decimal);
         
