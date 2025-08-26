@@ -2,7 +2,9 @@
 
 require_once 'vendor/autoload.php';
 
-use Illuminate\Support\Facades\DB;
+$app = require_once 'bootstrap/app.php';
+$app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
+
 use Smartisan\Settings\Facades\Settings;
 
 try {
